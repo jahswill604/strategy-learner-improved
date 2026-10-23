@@ -1,0 +1,53 @@
+# Copy this file to config.yaml and edit it.
+
+# Which AI model to use. Swap it any time; nothing learned is lost,
+# because everything is stored in the strategies/ folder, not in the model.
+# The model must be able to read images.
+model:
+  provider: anthropic            # anthropic | openai | openai_compatible
+  model: claude-sonnet-5-5
+  api_key_env: ANTHROPIC_API_KEY # name of the environment variable holding your key
+
+# Examples for other models:
+# model:
+#   provider: openai
+#   model: gpt-4o
+#   api_key_env: OPENAI_API_KEY
+#
+# model:                         # Gemini through its OpenAI-compatible endpoint
+#   provider: openai_compatible
+#   model: gemini-2.0-flash
+#   api_key_env: GEMINI_API_KEY
+#   base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+#
+# model:                         # a local model (must support images)
+#   provider: openai_compatible
+#   model: llama3.2-vision
+#   base_url: http://localhost:11434/v1
+
+storage:
+  dir: strategies
+
+# A strategy is marked READY only when every concept is learned and
+# has been right often enough on charts it had not seen.
+readiness:
+  min_tests_per_concept: 10
+  min_accuracy: 0.85
+
+data:
+  provider: yfinance             # yfinance (free, slightly delayed) | csv
+  csv_dir: data                  # for csv: files named EURUSD_1h.csv with columns time,open,high,low,close
+
+signals:
+  pairs: [EURUSD, GBPUSD, USDJPY]
+  timeframes: [1d, 4h, 1h, 15m]  # last one is treated as the entry chart
+  bars: 150
+  day_start_hour_utc: 0          # when your "day" starts (21 or 22 matches the New York 5pm FX rollover)
+  scan_every_minutes: 15
+  send_near_misses: false
+  example_images: 3
+
+notify:
+  telegram:
+    bot_token_env: TELEGRAM_BOT_TOKEN   # leave unset to just print signals in the terminal
+    chat_id_env: TELEGRAM_CHAT_ID

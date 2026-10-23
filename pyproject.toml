@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "strategy-learner"
+version = "0.1.0"
+description = "Teach an AI model a trader's FX strategy in plain words, then get signals."
+requires-python = ">=3.10"
+dependencies = ["pandas", "matplotlib", "pyyaml", "requests"]
+
+[project.optional-dependencies]
+anthropic = ["anthropic"]
+openai = ["openai"]
+data = ["yfinance"]
+dev = ["pytest"]
+
+[project.scripts]
+strategy-learner = "strategy_learner.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
